@@ -14,6 +14,7 @@
         <button type="submit" class="btn btn-block">登入</button>
         <span>or</span>
         <button type="button" class="signout btn btn-block"><router-link to="/signup">註冊</router-link></button>
+        <button type="button" class="dashboard btn btn-block"><router-link to="/admin">Dashboard</router-link></button>
       </div>
     </form>
   </div>
@@ -21,6 +22,7 @@
 
 <script>
 import firebase from 'firebase'
+import $ from 'jquery'
 // var data = {
 //   sid: 0,
 //   username: 'anita8004@gmail.com',
@@ -54,10 +56,14 @@ export default {
       firebase.auth().signInWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
         console.log('登入成功!')
         console.log(user)
+        $('.dashboard').css('display', 'block')
       }, function (err) {
         console.log(err.message)
       })
     }
+  },
+  mounted () {
+    $('.dashboard').css('display', 'none')
   }
 }
 </script>
