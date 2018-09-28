@@ -1,7 +1,7 @@
 <template>
   <div class="member">
-    <form class="login-card" @submit.prevent="signin">
-      <h1>SignIn</h1>
+    <form class="login-card" @submit.prevent="signup">
+      <h1>Signup</h1>
       <div class="form-group">
         <label for="inputUserName">帳號</label>
         <input type="text" class="form-control" id="inputUserName" placeholder="使用者名稱" v-model="user.userName">
@@ -11,9 +11,7 @@
         <input type="text" class="form-control" id="inputPassword" placeholder="使用者密碼" v-model="user.password">
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-block">登入</button>
-        <span>or</span>
-        <button type="button" class="signout btn btn-block"><router-link to="/signup">註冊</router-link></button>
+        <button type="submit" class="btn btn-block">註冊</button>
       </div>
     </form>
   </div>
@@ -48,12 +46,10 @@ export default {
       const format = (hours >= 12) ? '下午' : '上午'
       return `${format} ${hours}:${minutes}`
     },
-    signin () {
-      // this.$router.replace('admin')
+    signup () {
       const vm = this
-      firebase.auth().signInWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
-        console.log('登入成功!')
-        console.log(user)
+      firebase.auth().createUserWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
+        console.log('創建帳號成功')
       }, function (err) {
         console.log(err.message)
       })

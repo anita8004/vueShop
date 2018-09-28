@@ -6,9 +6,28 @@
         type="text" placeholder="Search" aria-label="Search">
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="#">Sign out</a>
+          <a class="nav-link" href="#" @click="signout">Sign out</a>
         </li>
       </ul>
     </nav>
   </div>
 </template>
+
+<script>
+import firebase from 'firebase'
+export default {
+  name: 'Home',
+  data () {
+    return {
+
+    }
+  },
+  methods: {
+    signout () {
+      firebase.auth().signOut().then(() => {
+        this.$router.replace('login')
+      })
+    }
+  }
+}
+</script>

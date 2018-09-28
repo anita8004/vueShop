@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import firebase from 'firebase'
 import 'bootstrap'
 
 import App from './App'
@@ -12,29 +13,23 @@ Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 axios.defaults.withCredentials = true
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
-})
-
-router.beforeEach((to, from, next) => {
-  console.log('to', to, 'from', from, 'next', next)
-  if (to.meta.requiresAuth) {
-    const api = `${process.env.APIPATH}/api/user/check`
-    axios.post(api).then((response) => {
-      console.log(response.data)
-      if (response.data.success) {
-        next()
-      } else {
-        next({
-          path: '/login'
-        })
-      }
+let app
+let config = {
+  apiKey: 'AIzaSyCzM-k1kr_9CRj0nzQBL8tm89i5jHB85wA',
+  authDomain: 'project-9f811.firebaseapp.com',
+  databaseURL: 'https://project-9f811.firebaseio.com',
+  projectId: 'project-9f811',
+  storageBucket: 'project-9f811.appspot.com',
+  messagingSenderId: '240760379820'
+}
+firebase.initializeApp(config)
+firebase.auth().onAuthStateChanged(function (user) {
+  if (!app) {
+    app = new Vue({
+      el: '#app',
+      router,
+      components: { App },
+      template: '<App/>'
     })
-  } else {
-    next()
   }
 })
