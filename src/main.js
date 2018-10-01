@@ -3,7 +3,9 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import Vuefire from 'vuefire'
 import firebase from 'firebase'
+// import VueSession from 'vue-session'
 import 'bootstrap'
 
 import App from './App'
@@ -11,6 +13,8 @@ import router from './router'
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
+Vue.use(Vuefire)
+// Vue.use(VueSession)
 axios.defaults.withCredentials = true
 
 let app
@@ -22,7 +26,9 @@ let config = {
   storageBucket: 'project-9f811.appspot.com',
   messagingSenderId: '240760379820'
 }
-firebase.initializeApp(config)
+let firebaseApp = firebase.initializeApp(config)
+Vue.prototype.$db = firebaseApp.database()
+
 firebase.auth().onAuthStateChanged(function (user) {
   if (!app) {
     app = new Vue({

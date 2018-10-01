@@ -3,8 +3,12 @@ import Router from 'vue-router'
 import Dashboard from '@/components/Dashboard'
 import Signup from '@/components/pages/Signup'
 import Login from '@/components/pages/Login'
-import Products from '@/components/pages/Products'
+import Applist from '@/components/pages/Applist'
+import User from '@/components/pages/User'
 import Members from '@/components/pages/Members'
+import Records from '@/components/pages/Records'
+import Competence from '@/components/pages/Competence'
+import Addcompetence from '@/components/pages/Addcompetence'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -33,18 +37,41 @@ let router = new Router({
       path: '/admin',
       name: 'Dashboard',
       component: Dashboard,
-      meta: { requiresAuth: true },
       children: [
         {
-          path: 'products',
-          name: 'products',
-          component: Products,
+          path: 'applist',
+          name: 'applist',
+          component: Applist,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'user/:id',
+          name: 'user',
+          component: User,
           meta: { requiresAuth: true }
         },
         {
           path: 'members',
           name: 'members',
           component: Members,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'records',
+          name: 'records',
+          component: Records,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'competence',
+          name: 'competence',
+          component: Competence,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'addcompetence',
+          name: 'addcompetence',
+          component: Addcompetence,
           meta: { requiresAuth: true }
         }
       ]

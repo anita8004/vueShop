@@ -14,56 +14,66 @@
         <button type="submit" class="btn btn-block">登入</button>
         <span>or</span>
         <button type="button" class="signout btn btn-block"><router-link to="/signup">註冊</router-link></button>
-        <button type="button" class="dashboard btn btn-block"><router-link to="/admin">Dashboard</router-link></button>
+        <!-- <button type="button" class="dashboard btn btn-block"><router-link to="/admin">Dashboard</router-link></button> -->
       </div>
     </form>
   </div>
 </template>
-
 <script>
 import firebase from 'firebase'
-import $ from 'jquery'
-// var data = {
-//   sid: 0,
-//   username: 'anita8004@gmail.com',
-//   password: '1234',
-//   nickname: 'anita',
-//   logintime: new Date(),
-//   logouttime: ''
-// }
+// import $ from 'jquery'
 export default {
   name: 'Login',
   data () {
     return {
       user: {
+        uid: '',
         userName: '',
-        password: ''
+        password: '',
+        createtime: '',
+        competence: 2
       },
-      users: []
+      records: {
+        userName: '',
+        actions: '登入',
+        time: ''
+      }
     }
   },
   methods: {
     getTime () {
       const now = new Date()
+      const year = now.getFullYear()
+      const month = now.getMonth() + 1
+      const day = now.getDay()
       const hours = now.getHours()
       const minutes = now.getMinutes()
+      const seconds = now.getSeconds()
       const format = (hours >= 12) ? '下午' : '上午'
-      return `${format} ${hours}:${minutes}`
+      return `${year}年${month}月${day}日 ${format} ${hours}:${minutes}:${seconds}`
     },
     signin () {
-      // this.$router.replace('admin')
       const vm = this
       firebase.auth().signInWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
         console.log('登入成功!')
         console.log(user)
-        $('.dashboard').css('display', 'block')
+        vm.addRecord()
+        vm.$router.push('/admin/members')
+        // $('.dashboard').css('display', 'block')
       }, function (err) {
         console.log(err.message)
       })
+    },
+    addRecord () {
+      const vm = this
+      let userRef = vm.$db.ref('records')
+      vm.records.userName = vm.user.userName
+      vm.records.time = vm.getTime()
+      userRef.push(vm.records)
     }
   },
   mounted () {
-    $('.dashboard').css('display', 'none')
+    // $('.dashboard').css('display', 'none')
   }
 }
 </script>

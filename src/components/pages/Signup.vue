@@ -19,40 +19,60 @@
 
 <script>
 import firebase from 'firebase'
-// var data = {
-//   sid: 0,
-//   username: 'anita8004@gmail.com',
-//   password: '1234',
-//   nickname: 'anita',
-//   logintime: new Date(),
-//   logouttime: ''
-// }
 export default {
-  name: 'Login',
+  name: 'Signup',
   data () {
     return {
       user: {
+        uid: '',
         userName: '',
-        password: ''
+        password: '',
+        createtime: '',
+        competence: 1
       },
-      users: []
+      records: {
+        userName: '',
+        actions: '註冊',
+        time: ''
+      }
     }
   },
   methods: {
     getTime () {
       const now = new Date()
+      const year = now.getFullYear()
+      const month = now.getMonth() + 1
+      const day = now.getDay()
       const hours = now.getHours()
       const minutes = now.getMinutes()
+      const seconds = now.getSeconds()
       const format = (hours >= 12) ? '下午' : '上午'
-      return `${format} ${hours}:${minutes}`
+      return `${year}年${month}月${day}日 ${format} ${hours}:${minutes}:${seconds}`
+    },
+    addUser () {
+      const vm = this
+      let userRef = vm.$db.ref('member/users')
+      userRef.push(vm.user)
     },
     signup () {
       const vm = this
       firebase.auth().createUserWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
+        console.log(user)
+        vm.user.uid = user.user.uid
+        vm.user.createtime = vm.getTime()
+        vm.addUser()
         console.log('創建帳號成功')
+        vm.$router.push('/login')
       }, function (err) {
         console.log(err.message)
       })
+    },
+    addRecord () {
+      const vm = this
+      let userRef = vm.$db.ref('records')
+      vm.records.userName = vm.user.userName
+      vm.records.time = vm.getTime()
+      userRef.push(vm.records)
     }
   }
 }
