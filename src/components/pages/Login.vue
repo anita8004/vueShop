@@ -4,16 +4,16 @@
       <h1>SignIn</h1>
       <div class="form-group">
         <label for="inputUserName">帳號</label>
-        <input type="text" class="form-control" id="inputUserName" placeholder="使用者名稱" v-model="user.userName">
+        <input type="email" class="form-control" id="inputUserName" placeholder="使用者名稱" v-model="user.userName" required>
       </div>
       <div class="form-group">
         <label for="inputPassword">密碼</label>
-        <input type="text" class="form-control" id="inputPassword" placeholder="使用者密碼" v-model="user.password">
+        <input type="password" class="form-control" id="inputPassword" placeholder="使用者密碼" v-model="user.password" required>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-block">登入</button>
+        <button type="submit" class="btn btn-info btn-block">登入</button>
         <span>or</span>
-        <button type="button" class="signout btn btn-block"><router-link to="/signup">註冊</router-link></button>
+        <button type="button" class="signout btn btn-info btn-block"><router-link to="/signup">註冊</router-link></button>
         <!-- <button type="button" class="dashboard btn btn-block"><router-link to="/admin">Dashboard</router-link></button> -->
       </div>
     </form>
@@ -30,6 +30,7 @@ export default {
         uid: '',
         userName: '',
         password: '',
+        name: '',
         createtime: '',
         competence: 2
       },
@@ -58,8 +59,7 @@ export default {
         console.log('登入成功!')
         console.log(user)
         vm.addRecord()
-        vm.$router.push('/admin/members')
-        // $('.dashboard').css('display', 'block')
+        vm.$router.push('/admin/applist')
       }, function (err) {
         console.log(err.message)
       })

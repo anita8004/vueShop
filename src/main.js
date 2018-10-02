@@ -7,6 +7,7 @@ import Vuefire from 'vuefire'
 import firebase from 'firebase'
 // import VueSession from 'vue-session'
 import 'bootstrap'
+import './assets/fontello/css/fontello.css'
 
 import App from './App'
 import router from './router'
@@ -37,5 +38,13 @@ firebase.auth().onAuthStateChanged(function (user) {
       components: { App },
       template: '<App/>'
     })
+  }
+})
+
+firebaseApp.database().ref('member/currentUser').on('value', snapshot => {
+  let current = snapshot.val()
+  if (current !== null) {
+    console.log(current)
+    Vue.prototype.$current = current
   }
 })

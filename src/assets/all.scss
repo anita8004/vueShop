@@ -3,3 +3,62 @@
 @import "~bootstrap/scss/bootstrap";
 @import "./dashboard";
 @import "./member";
+
+
+body {
+  font-family: 微軟正黑體;
+  background-color: $secondary;
+  color: white;
+  min-height: 100vh;
+}
+
+#header {
+  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 100%;
+  z-index: 3000;
+  .navbar-brand {
+    background-color: transparent;
+    box-shadow: 0 0 0 transparent;
+  }
+  .signoutBtn {
+    color: white;
+  }
+  .dropdown-menu {
+    left: auto;
+    right: 0;
+    background-color: $primary;
+    .dropdown-item {
+      color: white;
+      &:hover {
+        background-color: $secondary;
+      }
+    }
+  }
+}
+
+.bg-dark {
+  background-color: $primary !important;
+}
+
+main, [role="main"] {
+  padding-top: 100px;
+}
+
+.table.table-striped {
+  th, td {
+    border-top: 0;
+  }
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: $secondary;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba($blue, 0.5);
+}

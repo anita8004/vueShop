@@ -42,7 +42,7 @@
 import firebase from 'firebase'
 import $ from 'jquery'
 export default {
-  name: 'User',
+  name: 'Profile',
   data () {
     return {
       message: '',
@@ -88,13 +88,25 @@ export default {
     },
     updateUserData (id) {
       const vm = this
-      vm.$db.ref(`member/users/${id}`).set(vm.thisUser)
-      vm.message = '資料已更新'
-      $('.alert').removeClass('.alert-danger').addClass('.alert-success').css({display: 'block'})
-      setTimeout(function () {
-        $('.alert').css({display: 'none'})
-      }, 1000)
-      vm.addRecord()
+      var user = firebase.auth().currentUser
+      user.updateProfile({
+        displayName: vm.thisUser.name,
+        competence: vm.thisUser.competence
+      }).then(function () {
+        vm.$db.ref(`member/users/${id}`).set(vm.thisUser)
+        vm.message = '資料已更新'
+        $('.alert').removeClass('.alert-danger').addClass('.alert-success').css({display: 'block'})
+        setTimeout(function () {
+          $('.alert').css({display: 'none'})
+        }, 1000)
+        vm.addRecord()
+      }).catch(function (error) {
+        vm.message = '資料上傳錯誤 : ' + error
+        $('.alert').removeClass('.alert-success').addClass('.alert-danger').css({display: 'block'})
+        setTimeout(function () {
+          $('.alert').css({display: 'none'})
+        }, 1000)
+      })
     },
     addRecord () {
       const vm = this

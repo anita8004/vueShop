@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>APP LIST</h2>
+    <h2 class="mb-5">APP LIST</h2>
   </div>
 </template>
 <script>
