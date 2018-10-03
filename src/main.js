@@ -39,12 +39,13 @@ firebase.auth().onAuthStateChanged(function (user) {
       template: '<App/>'
     })
   }
-})
-
-firebaseApp.database().ref('member/currentUser').on('value', snapshot => {
-  let current = snapshot.val()
-  if (current !== null) {
-    console.log(current)
-    Vue.prototype.$current = current
-  }
+  console.log(user)
+  firebaseApp.database().ref('member/currentUser').orderByChild('uid').equalTo(user.uid).on('value', snapshot => {
+    let data = snapshot.val()
+    for (var key in data) {
+      var value = data[key]
+      Vue.prototype.$current = value
+      // console.log(value)
+    }
+  })
 })

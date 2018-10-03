@@ -3,10 +3,15 @@
 @import "~bootstrap/scss/bootstrap";
 @import "./dashboard";
 @import "./member";
+@import "./signin";
 
+#app {
+  width: 100%;
+}
 
 body {
   font-family: 微軟正黑體;
+  line-height: 1.5;
   background-color: $secondary;
   color: white;
   min-height: 100vh;
@@ -61,4 +66,18 @@ main, [role="main"] {
 
 .table-hover tbody tr:hover {
   background-color: rgba($blue, 0.5);
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+.btn a {
+  color: white;
+}
+
+button.signup a {
+  display: block;
 }

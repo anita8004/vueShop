@@ -87,7 +87,7 @@ export default {
     addRecord () {
       const vm = this
       let userRef = vm.$db.ref('records')
-      vm.records.userName = vm.$current.userName
+      vm.records.userName = vm.$current.userName || ''
       vm.records.time = vm.getTime()
       userRef.push(vm.records)
     }

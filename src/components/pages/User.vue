@@ -24,8 +24,8 @@
       </div>
       <div class="form-group form-row">
         <label class="col-12 col-sm-3 col-form-label">帳號權限</label>
-        <select name="" class="col-12 col-sm form-control" v-model.number="thisUser.competence">
-          <option v-for="(item, key) in competenceArr" :key="key" :value="item.index">{{item.groupName}}</option>
+        <select name="" class="col-12 col-sm form-control" v-model.number="thisUser.competenceIndex">
+          <option v-for="(item, key) in competenceArr" :key="key" :value="key">{{item.groupName}}</option>
         </select>
       </div>
       <div class="form-group">
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+// import firebase from 'firebase'
 import $ from 'jquery'
 export default {
   name: 'User',
@@ -53,7 +53,16 @@ export default {
         password: '',
         name: '',
         createtime: '',
-        competence: ''
+        lastLogin: '',
+        competenceName: '',
+        readPage: {
+          applist: true,
+          member: false,
+          competence: false,
+          records: false
+        },
+        competenceIndex: '',
+        state: ''
       },
       records: {
         userName: '',
@@ -88,18 +97,27 @@ export default {
     },
     updateUserData (id) {
       const vm = this
-      vm.$db.ref(`member/users/${id}`).set(vm.thisUser)
-      vm.message = '資料已更新'
-      $('.alert').removeClass('.alert-danger').addClass('.alert-success').css({display: 'block'})
-      setTimeout(function () {
-        $('.alert').css({display: 'none'})
-      }, 1000)
-      vm.addRecord()
+      vm.$db.ref(`member/users/${id}`).update(vm.thisUser, error => {
+        if (error) {
+          vm.message = error.message
+          $('.alert').removeClass('.alert-success').addClass('.alert-danger').css({display: 'block'})
+          setTimeout(function () {
+            $('.alert').css({display: 'none'})
+          }, 1000)
+        } else {
+          vm.message = '資料已更新'
+          $('.alert').removeClass('.alert-danger').addClass('.alert-success').css({display: 'block'})
+          setTimeout(function () {
+            $('.alert').css({display: 'none'})
+          }, 1000)
+          vm.addRecord()
+        }
+      })
     },
     addRecord () {
       const vm = this
       let userRef = vm.$db.ref('records')
-      vm.records.userName = vm.$current.userName || ''
+      vm.records.userName = vm.$current.userName
       vm.records.time = vm.getTime()
       userRef.push(vm.records)
     }

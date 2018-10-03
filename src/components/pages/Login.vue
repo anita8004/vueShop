@@ -1,20 +1,16 @@
 <template>
-  <div class="member">
-    <form class="login-card" @submit.prevent="signin">
-      <h1>SignIn</h1>
+  <div class="member text-center container">
+    <form class="form-signin" @submit.prevent="signin">
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <div class="form-group">
-        <label for="inputUserName">帳號</label>
-        <input type="email" class="form-control" id="inputUserName" placeholder="使用者名稱" v-model="user.userName" required>
-      </div>
-      <div class="form-group">
-        <label for="inputPassword">密碼</label>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" class="form-control" id="inputUserName" placeholder="使用者帳號" v-model="user.userName" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" class="form-control" id="inputPassword" placeholder="使用者密碼" v-model="user.password" required>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-info btn-block">登入</button>
-        <span>or</span>
-        <button type="button" class="signout btn btn-info btn-block"><router-link to="/signup">註冊</router-link></button>
-        <!-- <button type="button" class="dashboard btn btn-block"><router-link to="/admin">Dashboard</router-link></button> -->
+        <button class="btn btn-lg btn-info btn-block mb-3" type="submit">登入</button>
+        <router-link to="/signup" class="signup btn btn-lg btn-info btn-block">註冊</router-link>
       </div>
     </form>
   </div>
@@ -32,7 +28,7 @@ export default {
         password: '',
         name: '',
         createtime: '',
-        competence: 2
+        competence: ''
       },
       records: {
         userName: '',
@@ -58,6 +54,15 @@ export default {
       firebase.auth().signInWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
         console.log('登入成功!')
         console.log(user)
+        let currentUser = {
+          uid: user.user.uid,
+          userName: user.user.email,
+          name: user.user.displayName || '',
+          createtime: user.user.metadata.creationTime,
+          lastLogin: user.user.metadata.lastSignInTime,
+          state: user.operationType
+        }
+        vm.$db.ref('member/currentUser').push(currentUser)
         vm.addRecord()
         vm.$router.push('/admin/applist')
       }, function (err) {

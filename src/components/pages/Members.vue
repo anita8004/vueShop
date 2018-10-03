@@ -53,7 +53,7 @@ export default {
     }
   },
   beforeCreate () {
-    console.log(this.$current)
+    // console.log(this.$current)
   }
 }
 </script>

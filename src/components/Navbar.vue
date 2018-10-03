@@ -23,7 +23,7 @@
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello~ {{currentUser.name}}</a>
+            <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello~ {{userName}}</a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
               <a class="dropdown-item" href="#">修改個人資料</a>
               <a class="dropdown-item" href="#">修改密碼</a>
@@ -47,12 +47,15 @@ export default {
   data () {
     return {
       logoimg: require('../assets/images/Servcloud-horizontal.png'),
-      currentUser: null,
       records: {
         userName: '',
         actions: '登出',
         time: ''
-      }
+      },
+      userName: '',
+      currentUserKey: '',
+      userCompetence: 1,
+      userCanRead: false
     }
   },
   methods: {
@@ -68,35 +71,45 @@ export default {
       return `${year}年${month}月${day}日 ${format} ${hours}:${minutes}:${seconds}`
     },
     signout () {
+      const vm = this
+      vm.records.userName = vm.userName
+      vm.records.time = vm.getTime()
+      vm.$db.ref(`member/currentUser/${vm.currentUserKey}`).set(null)
+      vm.$db.ref(`member/currentUser/${vm.currentUserKey}`).remove()
       firebase.auth().signOut().then(() => {
-        this.logoutRecord()
-        this.$router.replace('/login')
+        vm.logoutRecord()
+        vm.$router.replace('/login')
       })
     },
     logoutRecord () {
       const vm = this
       vm.$db.ref('records').push(vm.records)
+    },
+    getUserName (user) {
+      const vm = this
+      vm.userName = user.displayName || user.email || 'customer'
+    },
+    decideUserCanRead (num) {
+      switch (num) {
+        case 0:
+          return true
+        default:
+          return false
+      }
     }
   },
   mounted () {
     const vm = this
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        // User is signed in.
-        console.log(user)
-        vm.currentUser = {
-          uid: user.uid,
-          userName: user.email,
-          name: user.displayName,
-          state: 'login'
-        }
-        vm.$db.ref('member/currentUser').set(vm.currentUser)
-        vm.records.userName = vm.$current.userName
-        vm.records.time = vm.getTime()
-      } else {
-        // No user is signed in.
-        vm.currentUser = null
-        vm.$db.ref('member/currentUser').set(vm.currentUser)
+        vm.getUserName(user)
+        vm.$db.ref('member/currentUser').orderByChild('uid').equalTo(user.uid).on('value', snapshot => {
+          let data = snapshot.val()
+          if (data) {
+            let key = Object.keys(data)[0]
+            vm.currentUserKey = key
+          }
+        })
       }
     })
   }
