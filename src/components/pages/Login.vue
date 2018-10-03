@@ -28,7 +28,16 @@ export default {
         password: '',
         name: '',
         createtime: '',
-        competence: ''
+        lastLogin: '',
+        competenceName: '新使用者',
+        readPage: {
+          applist: true,
+          member: false,
+          competence: false,
+          records: false
+        },
+        competenceIndex: 4,
+        state: ''
       },
       records: {
         userName: '',
@@ -53,18 +62,19 @@ export default {
       const vm = this
       firebase.auth().signInWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
         console.log('登入成功!')
-        console.log(user)
-        let currentUser = {
-          uid: user.user.uid,
-          userName: user.user.email,
-          name: user.user.displayName || '',
-          createtime: user.user.metadata.creationTime,
-          lastLogin: user.user.metadata.lastSignInTime,
-          state: user.operationType
-        }
-        vm.$db.ref('member/currentUser').push(currentUser)
-        vm.addRecord()
-        vm.$router.push('/admin/applist')
+        // console.log(user)
+        vm.$db.ref('member/users').orderByChild('uid').equalTo(user.user.uid).on('value', snapshot => {
+          let data = snapshot.val()
+          // console.log(data)
+          for (let key in data) {
+            let value = data[key]
+            vm.user = value
+            // console.log(vm.user)
+            vm.$db.ref('member/currentUser').push(vm.user)
+            vm.addRecord()
+            vm.$router.push('/admin/applist')
+          }
+        })
       }, function (err) {
         console.log(err.message)
       })
@@ -73,12 +83,9 @@ export default {
       const vm = this
       let userRef = vm.$db.ref('records')
       vm.records.userName = vm.user.userName
-      vm.records.time = vm.getTime()
+      vm.records.time = vm.user.createtime
       userRef.push(vm.records)
     }
-  },
-  mounted () {
-    // $('.dashboard').css('display', 'none')
   }
 }
 </script>

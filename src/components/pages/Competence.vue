@@ -17,11 +17,11 @@
       </thead>
       <tbody>
         <tr v-for="(item, key) in competenceArr" :key="key">
-          <td>{{item.index}}</td>
-          <td>{{item.groupName}}</td>
+          <td>{{item.competenceIndex}}</td>
+          <td>{{item.competenceName}}</td>
           <td>
-            <span class="badge badge-info m-1" v-for="(span, key) in item.groupValue" :key="key">
-              {{span}}
+            <span class="badge badge-info m-1" v-for="(span, key) in item.readPage" v-if="span" :key="key">
+              {{key}}
             </span>
           </td>
           <td>

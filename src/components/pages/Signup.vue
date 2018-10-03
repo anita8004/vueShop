@@ -17,6 +17,7 @@
 
 <script>
 import firebase from 'firebase'
+import { Base64 } from 'js-base64'
 export default {
   name: 'Signup',
   data () {
@@ -63,8 +64,8 @@ export default {
         vm.user = {
           uid: user.user.uid,
           userName: user.user.email,
-          password: vm.user.password,
-          name: user.user.displayName || '',
+          password: Base64.encode(vm.user.password),
+          name: user.user.displayName || '新註冊使用者',
           createtime: user.user.metadata.creationTime,
           lastLogin: user.user.metadata.lastSignInTime,
           competenceName: '系統',

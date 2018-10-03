@@ -108,6 +108,7 @@ export default {
           if (data) {
             let key = Object.keys(data)[0]
             vm.currentUserKey = key
+            vm.userName = data[key].name || user.displayName || user.email || '新註冊使用者'
           }
         })
       }

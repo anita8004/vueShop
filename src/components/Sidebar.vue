@@ -33,12 +33,17 @@
 
 <script>
 import firebase from 'firebase'
-import $ from 'jquery'
+// import $ from 'jquery'
 export default {
   name: 'Sidebar',
   data () {
     return {
-      userCanRead: {}
+      userCanRead: {
+        applist: true,
+        member: false,
+        competence: false,
+        records: false
+      }
     }
   },
   methods: {
@@ -57,21 +62,13 @@ export default {
       if (user) {
         vm.$db.ref('member/currentUser').orderByChild('uid').equalTo(user.uid).on('value', snapshot => {
           let data = snapshot.val()
+          // console.log(data)
           for (let key in data) {
             let value = data[key]
             vm.userCanRead = value.readPage
-            console.log(vm.userCanRead)
+            // console.log(vm.userCanRead)
           }
         })
-        // let num = vm.userCompetence.toString()
-        // vm.$db.ref('competenceGroups').orderByChild('index').equalTo(num).on('value', snapshot => {
-        //   console.log(snapshot.val())
-        //   let data = snapshot.val()
-        //   for (let key in data) {
-        //     let value = data[key]
-        //     console.log(value)
-        //   }
-        // })
       } else {
         // No user is signed in.
       }
