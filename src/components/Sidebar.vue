@@ -1,78 +1,78 @@
 <template>
-  <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+  <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="#">
-            <span data-feather="home"></span>
-            Dashboard <span class="sr-only">(current)</span>
-          </a>
+          <router-link to="/admin/applist" class="nav-link active" v-if="userCanRead.applist" role="applist">
+            <span class="icon-th-thumb"></span>
+            APP 平台
+          </router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="file"></span>
-            Orders
-          </a>
+        <li class="nav-item" v-if="userCanRead.member" role="member">
+          <router-link to="/admin/members" class="nav-link">
+            <span class="icon-user"></span>
+            使用者管理
+          </router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="shopping-cart"></span>
-            Products
-          </a>
+        <li class="nav-item" v-if="userCanRead.competence" role="competence">
+          <router-link to="/admin/competence" class="nav-link">
+            <span class="icon-cog"></span>
+            權限管理
+          </router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="users"></span>
-            Customers
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="bar-chart-2"></span>
-            Reports
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="layers"></span>
-            Integrations
-          </a>
-        </li>
-      </ul>
-
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center
-        px-3 mt-4 mb-1 text-muted">
-        <span>Saved reports</span>
-        <a class="d-flex align-items-center text-muted" href="#">
-          <span data-feather="plus-circle"></span>
-        </a>
-      </h6>
-      <ul class="nav flex-column mb-2">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Current month
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Last quarter
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Social engagement
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Year-end sale
-          </a>
+        <li class="nav-item" v-if="userCanRead.records" role="records">
+          <router-link to="/admin/records" class="nav-link">
+            <span class="icon-record"></span>
+            操作紀錄
+          </router-link>
         </li>
       </ul>
     </div>
   </nav>
 </template>
+
+<script>
+import firebase from 'firebase'
+// import $ from 'jquery'
+export default {
+  name: 'Sidebar',
+  data () {
+    return {
+      userCanRead: {
+        applist: true,
+        member: false,
+        competence: false,
+        records: false
+      }
+    }
+  },
+  methods: {
+    decideUserCanRead (num) {
+      switch (num) {
+        case 0:
+          return true
+        default:
+          return false
+      }
+    }
+  },
+  mounted () {
+    const vm = this
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        vm.$db.ref('member/currentUser').orderByChild('uid').equalTo(user.uid).on('value', snapshot => {
+          let data = snapshot.val()
+          // console.log(data)
+          for (let key in data) {
+            let value = data[key]
+            vm.userCanRead = value.readPage
+            // console.log(vm.userCanRead)
+          }
+        })
+      } else {
+        // No user is signed in.
+      }
+    })
+  }
+}
+</script>
