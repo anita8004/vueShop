@@ -29,14 +29,14 @@ export default {
         name: '',
         createtime: '',
         lastLogin: '',
-        competenceName: '新使用者',
+        competenceName: '',
         readPage: {
           applist: true,
           member: false,
           competence: false,
           records: false
         },
-        competenceIndex: 4,
+        competenceIndex: '',
         state: ''
       },
       records: {
@@ -62,14 +62,11 @@ export default {
       const vm = this
       firebase.auth().signInWithEmailAndPassword(vm.user.userName, vm.user.password).then(function (user) {
         console.log('登入成功!')
-        // console.log(user)
         vm.$db.ref('member/users').orderByChild('uid').equalTo(user.user.uid).on('value', snapshot => {
           let data = snapshot.val()
-          // console.log(data)
           for (let key in data) {
             let value = data[key]
             vm.user = value
-            // console.log(vm.user)
             vm.$db.ref('member/currentUser').push(vm.user)
             vm.addRecord()
             vm.$router.push('/admin/applist')
@@ -86,6 +83,8 @@ export default {
       vm.records.time = vm.getTime()
       userRef.push(vm.records)
     }
+  },
+  mounted () {
   }
 }
 </script>

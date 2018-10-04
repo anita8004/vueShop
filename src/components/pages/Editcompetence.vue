@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mb-5">新增權限</h2>
+    <h2 class="mb-5">編輯權限</h2>
     <form class="form">
       <div class="form-group form-row">
         <label class="col-12 col-sm-3 col-form-label">權限名稱</label>
@@ -11,7 +11,7 @@
         <div class="col-12 col-sm">
           <div class="form-group">
             <label class="form-check-label" for="applist">
-              <input type="checkbox" value="App清單" id="applist" class="form-check-inline" v-model="readPage.applist"> App清單
+              <input type="checkbox" value="App清單" id="applist" class="form-check-inline" checked disabled v-model="readPage.applist"> App清單
             </label>
           </div>
           <div class="form-group">
@@ -33,7 +33,7 @@
       </div>
       <div class="form-group form-row">
         <label class="col-12 col-sm-3 col-form-label">權限編號</label>
-        <input type="number" name="competenceIndex" class="col-12 col-sm form-control" v-model="competenceIndex">
+        <input type="number" name="competenceIndex" class="col-12 col-sm form-control" v-model="competenceIndex" disabled>
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-info" @click.prevent="updateData">變更</button>
@@ -68,11 +68,9 @@ export default {
       message: ''
     }
   },
-  firebase () {
-    return {
-      userArr: this.$db.ref('member/users')
-    }
-  },
+  // firebase: {
+  //   userArr: this.$db.ref('member/users')
+  // },
   beforeCreate () {
     this.message = ''
   },
@@ -92,15 +90,13 @@ export default {
       const vm = this
       vm.competenceGroup = {
         competenceName: vm.competenceName,
-        readPage: vm.readPage,
-        competenceIndex: vm.competenceIndex
+        readPage: vm.readPage
       }
     },
     getData () {
       const vm = this
       vm.$db.ref(`competenceGroups/${this.$route.params.id}`).on('value', snapshot => {
         let data = snapshot.val()
-        // console.log(data)
         vm.competenceIndex = data.competenceIndex
         vm.readPage = data.readPage
         vm.competenceName = data.competenceName
@@ -110,12 +106,12 @@ export default {
     updateData () {
       const vm = this
       vm.$db.ref(`competenceGroups/${this.$route.params.id}`).update(vm.competenceGroup)
-      vm.changecompetence()
-    },
-    changecompetence () {
-      const vm = this
-      vm.$db.ref('member/users').orderByChild('competenceIndex').equalTo(vm.competenceIndex.toString()).on('value', snapshot => {
-        console.log(snapshot.val())
+      vm.$db.ref('member/users').orderByChild('competenceIndex').equalTo(vm.competenceIndex).once('value', snapshot => {
+        let data = snapshot.val()
+        console.log(data)
+        for (let key in data) {
+          vm.$db.ref(`member/users/${key}`).update(vm.competenceGroup)
+        }
       })
     },
     addRecord () {
@@ -132,13 +128,6 @@ export default {
   },
   mounted () {
     this.getData()
-    const vm = this
-    console.log(vm.userArr)
-    for (let i = 0; i < vm.userArr.length; i++) {
-      if (vm.userArr[i].competenceIndex === vm.competenceIndex.toString()) {
-        console.log('ok')
-      }
-    }
   }
 }
 </script>

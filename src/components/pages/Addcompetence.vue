@@ -11,7 +11,7 @@
         <div class="col-12 col-sm">
           <div class="form-group">
             <label class="form-check-label" for="applist">
-              <input type="checkbox" value="App清單" id="applist" class="form-check-inline" v-model="readPage.applist"> App清單
+              <input type="checkbox" value="App清單" id="applist" class="form-check-inline" checked disabled v-model="readPage.applist"> App清單
             </label>
           </div>
           <div class="form-group">
