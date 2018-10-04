@@ -11,7 +11,7 @@
         <li class="nav-item" v-if="userCanRead.member" role="member">
           <router-link to="/admin/members" class="nav-link">
             <span class="icon-user"></span>
-            帳號管理
+            使用者管理
           </router-link>
         </li>
         <li class="nav-item" v-if="userCanRead.competence" role="competence">

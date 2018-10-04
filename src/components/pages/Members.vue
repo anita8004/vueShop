@@ -22,7 +22,7 @@
             <a href="#" class="btn btn-info" @click.prevent="editUser(user['.key'])">編輯</a>
           </td>
           <td>
-            <a href="#" class="btn btn-info" @click.prevent="removeUser(user['.key'])">刪除</a>
+            <a href="#" class="btn btn-info" disabled @click.prevent="removeUser(user['.key'], user.uid)">刪除</a>
           </td>
         </tr>
       </tbody>
@@ -35,7 +35,12 @@ export default {
   name: 'Members',
   data () {
     return {
-      users: []
+      users: [],
+      records: {
+        userName: '',
+        actions: '刪除使用者',
+        time: ''
+      }
     }
   },
   firebase () {
@@ -44,9 +49,40 @@ export default {
     }
   },
   methods: {
-    removeUser () {
-      // let currentUser = firebase.auth().currentUser
-      // console.log(currentUser)
+    getTime () {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = now.getMonth() + 1
+      const day = now.getDay()
+      const hours = now.getHours()
+      const minutes = now.getMinutes()
+      const seconds = now.getSeconds()
+      const format = (hours >= 12) ? '下午' : '上午'
+      return `${year}年${month}月${day}日 ${format} ${hours}:${minutes}:${seconds}`
+    },
+    addRecord () {
+      const vm = this
+      let userRef = vm.$db.ref('records')
+      vm.records.userName = vm.$current.userName
+      vm.records.time = vm.getTime()
+      userRef.push(vm.records)
+    },
+    removeUser (id, uid) {
+      // const vm = this
+      // console.log(id)
+      // console.log(uid)
+      // user.delete().then(function() {
+      //   // User deleted.
+      // }).catch(function(error) {
+      //   // An error happened.
+      // })
+      // firebase.auth().deleteUser(uid).then(function () {
+      //   console.log('Successfully deleted user')
+      //   vm.$db.ref(`member/users/${id}`).remove()
+      //   vm.addRecord()
+      // }).catch(function (error) {
+      //   console.log('Error deleting user:', error)
+      // })
     },
     editUser (id) {
       this.$router.push(`/admin/user/${id}`)

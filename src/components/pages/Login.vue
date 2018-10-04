@@ -83,7 +83,7 @@ export default {
       const vm = this
       let userRef = vm.$db.ref('records')
       vm.records.userName = vm.user.userName
-      vm.records.time = vm.user.createtime
+      vm.records.time = vm.getTime()
       userRef.push(vm.records)
     }
   }

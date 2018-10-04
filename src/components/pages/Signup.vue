@@ -68,7 +68,7 @@ export default {
           name: user.user.displayName || '新註冊使用者',
           createtime: user.user.metadata.creationTime,
           lastLogin: user.user.metadata.lastSignInTime,
-          competenceName: '系統',
+          competenceName: '新使用者',
           readPage: {
             applist: true,
             member: false,
@@ -91,7 +91,7 @@ export default {
       const vm = this
       let userRef = vm.$db.ref('records')
       vm.records.userName = vm.user.userName
-      vm.records.time = vm.user.createtime
+      vm.records.time = vm.getTime()
       userRef.push(vm.records)
     }
   }

@@ -39,7 +39,13 @@
 export default {
   name: 'Competence',
   data () {
-    return {}
+    return {
+      records: {
+        userName: '',
+        actions: '刪除權限群組',
+        time: ''
+      }
+    }
   },
   firebase () {
     return {
@@ -47,8 +53,32 @@ export default {
     }
   },
   methods: {
-    editCompetence (id) {},
-    removeCompetence (id) {}
+    getTime () {
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = now.getMonth() + 1
+      const day = now.getDay()
+      const hours = now.getHours()
+      const minutes = now.getMinutes()
+      const seconds = now.getSeconds()
+      const format = (hours >= 12) ? '下午' : '上午'
+      return `${year}年${month}月${day}日 ${format} ${hours}:${minutes}:${seconds}`
+    },
+    addRecord () {
+      const vm = this
+      let userRef = vm.$db.ref('records')
+      vm.records.userName = vm.$current.userName || ''
+      vm.records.time = vm.getTime()
+      userRef.push(vm.records)
+    },
+    editCompetence (id) {
+      this.$router.push(`/admin/editcompetence/${id}`)
+    },
+    removeCompetence (id) {
+      const vm = this
+      vm.addRecord()
+      vm.$db.ref(`competenceGroups/${id}`).remove()
+    }
   }
 }
 </script>

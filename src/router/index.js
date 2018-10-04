@@ -9,6 +9,7 @@ import Members from '@/components/pages/Members'
 import Records from '@/components/pages/Records'
 import Competence from '@/components/pages/Competence'
 import Addcompetence from '@/components/pages/Addcompetence'
+import Editcompetence from '@/components/pages/Editcompetence'
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -72,6 +73,12 @@ let router = new Router({
           path: 'addcompetence',
           name: 'addcompetence',
           component: Addcompetence,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'editcompetence/:id',
+          name: 'editcompetence',
+          component: Editcompetence,
           meta: { requiresAuth: true }
         }
       ]

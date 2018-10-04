@@ -36,7 +36,7 @@
         <input type="number" name="competenceIndex" class="col-12 col-sm form-control" v-model="competenceIndex">
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-info" @click.prevent="addData">新增</button>
+        <button type="submit" class="btn btn-info" @click.prevent="updateData">變更</button>
       </div>
     </form>
     <div class="alert alert-success" role="alert" style="display: none">
@@ -45,9 +45,10 @@
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import firebase from 'firebase'
+// import $ from 'jquery'
 export default {
-  name: 'Addcompetence',
+  name: 'Editcompetence',
   data () {
     return {
       competenceName: '',
@@ -61,7 +62,7 @@ export default {
       competenceGroup: {},
       records: {
         userName: '',
-        actions: '增加權限群組',
+        actions: '編輯權限群組',
         time: ''
       },
       message: ''
@@ -69,7 +70,7 @@ export default {
   },
   firebase () {
     return {
-      competenceArr: this.$db.ref('competenceGroups')
+      userArr: this.$db.ref('member/users')
     }
   },
   beforeCreate () {
@@ -95,27 +96,26 @@ export default {
         competenceIndex: vm.competenceIndex
       }
     },
-    addData () {
+    getData () {
       const vm = this
-      vm.groupData()
-      vm.$db.ref('competenceGroups').push(vm.competenceGroup, error => {
-        if (error) {
-          console.log(error.message)
-        } else {
-          const promise1 = new Promise((resolve) => {
-            resolve('新增完成')
-            vm.addRecord()
-            vm.message = '新增完成'
-            $('.alert-success').css({
-              display: 'block'
-            })
-          })
-          promise1.then(value => {
-            setTimeout(function () {
-              vm.$router.push('/admin/competence')
-            }, 500)
-          })
-        }
+      vm.$db.ref(`competenceGroups/${this.$route.params.id}`).on('value', snapshot => {
+        let data = snapshot.val()
+        // console.log(data)
+        vm.competenceIndex = data.competenceIndex
+        vm.readPage = data.readPage
+        vm.competenceName = data.competenceName
+        vm.groupData()
+      })
+    },
+    updateData () {
+      const vm = this
+      vm.$db.ref(`competenceGroups/${this.$route.params.id}`).update(vm.competenceGroup)
+      vm.changecompetence()
+    },
+    changecompetence () {
+      const vm = this
+      vm.$db.ref('member/users').orderByChild('competenceIndex').equalTo(vm.competenceIndex.toString()).on('value', snapshot => {
+        console.log(snapshot.val())
       })
     },
     addRecord () {
@@ -131,7 +131,14 @@ export default {
     }
   },
   mounted () {
-    this.getIndex()
+    this.getData()
+    const vm = this
+    console.log(vm.userArr)
+    for (let i = 0; i < vm.userArr.length; i++) {
+      if (vm.userArr[i].competenceIndex === vm.competenceIndex.toString()) {
+        console.log('ok')
+      }
+    }
   }
 }
 </script>

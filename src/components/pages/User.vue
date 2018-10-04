@@ -34,6 +34,7 @@
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-info" @click.prevent="updateUserData($route.params.id)">變更</button>
+        <router-link to="/admin/members" class="btn btn-info">返回使用者列表</router-link>
       </div>
     </form>
     <div class="alert alert-success" role="alert" style="display: none">
