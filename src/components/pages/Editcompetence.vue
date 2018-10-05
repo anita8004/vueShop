@@ -106,7 +106,7 @@ export default {
     updateData () {
       const vm = this
       vm.$db.ref(`competenceGroups/${this.$route.params.id}`).update(vm.competenceGroup)
-      vm.$db.ref('member/users').orderByChild('competenceIndex').equalTo(vm.competenceIndex).once('value', snapshot => {
+      vm.$db.ref('member/users').orderByChild('competenceIndex').equalTo(Number(vm.competenceIndex)).once('value', snapshot => {
         let data = snapshot.val()
         console.log(data)
         for (let key in data) {

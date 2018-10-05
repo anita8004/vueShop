@@ -4,6 +4,7 @@ import Dashboard from '@/components/Dashboard'
 import Signup from '@/components/pages/Signup'
 import Login from '@/components/pages/Login'
 import Applist from '@/components/pages/Applist'
+import Profile from '@/components/pages/Profile'
 import User from '@/components/pages/User'
 import Members from '@/components/pages/Members'
 import Records from '@/components/pages/Records'
@@ -43,6 +44,12 @@ let router = new Router({
           path: 'applist',
           name: 'applist',
           component: Applist,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'profile',
+          name: 'Profile',
+          component: Profile,
           meta: { requiresAuth: true }
         },
         {

@@ -25,7 +25,8 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello~ {{userName}}</a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <a class="dropdown-item" href="#">修改個人資料</a>
+              <router-link to="/admin/profile" class="dropdown-item">修改個人資料</router-link>
+              <!-- <a class="dropdown-item" href="#">修改個人資料</a> -->
               <a class="dropdown-item" href="#">修改密碼</a>
             </div>
           </li>
@@ -76,9 +77,10 @@ export default {
       vm.records.time = vm.getTime()
       vm.$db.ref(`member/currentUser/${vm.currentUserKey}`).set(null)
       vm.$db.ref(`member/currentUser/${vm.currentUserKey}`).remove()
+      vm.logoutRecord()
       firebase.auth().signOut().then(() => {
-        vm.logoutRecord()
         vm.$router.replace('/login')
+        console.log('登出成功')
       })
     },
     logoutRecord () {
@@ -88,14 +90,6 @@ export default {
     getUserName (user) {
       const vm = this
       vm.userName = user.displayName || user.email || 'customer'
-    },
-    decideUserCanRead (num) {
-      switch (num) {
-        case 0:
-          return true
-        default:
-          return false
-      }
     }
   },
   mounted () {

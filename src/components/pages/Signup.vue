@@ -11,6 +11,9 @@
       <div class="form-group">
         <button class="btn btn-lg btn-info btn-block" type="submit">註冊</button>
       </div>
+      <div class="form-group">
+        <p>{{message}}</p>
+      </div>
     </form>
   </div>
 </template>
@@ -43,7 +46,8 @@ export default {
         userName: '',
         actions: '註冊',
         time: ''
-      }
+      },
+      message: ''
     }
   },
   methods: {
@@ -84,7 +88,8 @@ export default {
         console.log('創建帳號成功')
         vm.$router.push('/admin/applist')
       }, function (err) {
-        console.log(err.message)
+        vm.message = err.message
+        console.log(err.code)
       })
     },
     addRecord () {

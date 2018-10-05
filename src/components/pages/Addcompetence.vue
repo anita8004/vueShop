@@ -33,7 +33,7 @@
       </div>
       <div class="form-group form-row">
         <label class="col-12 col-sm-3 col-form-label">權限編號</label>
-        <input type="number" name="competenceIndex" class="col-12 col-sm form-control" v-model="competenceIndex">
+        <input type="number" name="competenceIndex" class="col-12 col-sm form-control" v-model.number="competenceIndex">
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-info" @click.prevent="addData">新增</button>

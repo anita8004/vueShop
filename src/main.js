@@ -14,7 +14,6 @@ import router from './router'
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 Vue.use(Vuefire)
-// Vue.use(VueSession)
 axios.defaults.withCredentials = true
 
 let app

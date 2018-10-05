@@ -12,6 +12,9 @@
         <button class="btn btn-lg btn-info btn-block mb-3" type="submit">登入</button>
         <router-link to="/signup" class="signup btn btn-lg btn-info btn-block">註冊</router-link>
       </div>
+      <div class="form-group">
+        <p>{{message}}</p>
+      </div>
     </form>
   </div>
 </template>
@@ -43,7 +46,8 @@ export default {
         userName: '',
         actions: '登入',
         time: ''
-      }
+      },
+      message: ''
     }
   },
   methods: {
@@ -73,7 +77,8 @@ export default {
           }
         })
       }, function (err) {
-        console.log(err.message)
+        vm.message = err.message
+        console.log(err.code)
       })
     },
     addRecord () {
