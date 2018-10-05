@@ -24,4 +24,5 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 登入帳密
 
 admin@admin.com
+
 admin123456
