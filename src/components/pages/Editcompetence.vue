@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2 class="mb-5">編輯權限</h2>
     <form class="form">
       <div class="form-group form-row">
@@ -37,6 +37,7 @@
       </div>
       <div class="form-group">
         <button type="submit" class="btn btn-info" @click.prevent="updateData">變更</button>
+        <router-link to="/admin/competence" class="btn btn-info">返回權限列表</router-link>
       </div>
     </form>
     <div class="alert alert-success" role="alert" style="display: none">
@@ -45,8 +46,6 @@
   </div>
 </template>
 <script>
-// import firebase from 'firebase'
-// import $ from 'jquery'
 export default {
   name: 'Editcompetence',
   data () {
@@ -68,9 +67,6 @@ export default {
       message: ''
     }
   },
-  // firebase: {
-  //   userArr: this.$db.ref('member/users')
-  // },
   beforeCreate () {
     this.message = ''
   },

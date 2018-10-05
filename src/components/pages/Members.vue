@@ -1,15 +1,14 @@
 <template>
-  <div>
+  <div class="container">
     <h2 class="mb-5">使用者帳號管理</h2>
     <table class="table table-striped table-hover bg-primary">
       <thead>
         <tr>
-          <th>#</th>
+          <th width="60">#</th>
           <th>暱稱</th>
           <th>帳號名稱</th>
           <th>註冊時間</th>
-          <th>編輯</th>
-          <th>刪除</th>
+          <th width="50">編輯</th>
         </tr>
       </thead>
       <tbody>
@@ -19,10 +18,9 @@
           <td>{{user.userName}}</td>
           <td>{{user.createtime}}</td>
           <td>
-            <a href="#" class="btn btn-info" @click.prevent="editUser(user['.key'])">編輯</a>
-          </td>
-          <td>
-            <a href="#" class="btn btn-info" disabled @click.prevent="removeUser(user['.key'], user.uid)">刪除</a>
+            <a href="#" class="btn btn-info" @click.prevent="editUser(user['.key'])">
+              <span class="icon-edit-alt"></span>
+            </a>
           </td>
         </tr>
       </tbody>
@@ -65,25 +63,6 @@ export default {
       vm.records.userName = vm.$current.userName
       vm.records.time = vm.getTime()
       userRef.push(vm.records)
-    },
-    removeUser (id, uid) {
-      // const vm = this
-      // console.log(id)
-      // console.log(uid)
-      // let user = vm.$auth.currentUser
-      // console.log(user)
-      // if (user.uid === uid) {
-      //   user.delete().then(function () {
-      //     console.log(user)
-      //   })
-      // }
-      // vm.$auth.deleteUser(uid).then(function () {
-      //   console.log('Successfully deleted user')
-      //   vm.$db.ref(`member/users/${id}`).remove()
-      //   vm.addRecord()
-      // }).catch(function (error) {
-      //   console.log('Error deleting user:', error)
-      // })
     },
     editUser (id) {
       this.$router.push(`/admin/user/${id}`)

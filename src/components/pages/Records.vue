@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <h2 class="mb-5">RECORDS</h2>
+  <div class="container">
+    <h2 class="mb-5">操作紀錄</h2>
     <div class="table-responsive">
       <table class="table table-striped table-hover bg-primary">
         <thead>
-          <th>#</th>
+          <th width="60">#</th>
           <th>帳號名稱</th>
           <th>動作</th>
           <th>操作時間</th>

@@ -1,18 +1,17 @@
 <template>
-  <div>
+  <div class="container">
     <h2 class="mb-5">權限管理</h2>
-    <div class="text-right m-2">
-      <router-link to="/admin/addcompetence" class="btn btn-info">新增權限</router-link>
-      <button type="button" class="btn btn-info">新增權限內容</button>
+    <div class="text-right mb-3">
+      <router-link to="/admin/addcompetence" class="btn btn-info"><span class="icon-list-add"></span>新增權限</router-link>
     </div>
     <table class="table table-striped table-hover bg-primary">
       <thead>
         <tr>
-          <td>編號</td>
-          <td>權限群組名稱</td>
-          <td>權限內容</td>
-          <td>編輯</td>
-          <td>刪除</td>
+          <th width="60">編號</th>
+          <th>權限群組名稱</th>
+          <th>權限內容</th>
+          <th width="50">編輯</th>
+          <th width="50">刪除</th>
         </tr>
       </thead>
       <tbody>
@@ -25,10 +24,14 @@
             </span>
           </td>
           <td>
-            <a href="#" class="btn btn-info" @click.prevent="editCompetence(item['.key'])">編輯</a>
+            <a href="#" class="btn btn-info" @click.prevent="editCompetence(item['.key'])">
+              <span class="icon-edit-alt"></span>
+            </a>
           </td>
           <td>
-            <a href="#" class="btn btn-info" @click.prevent="removeCompetence(item['.key'])">刪除</a>
+            <a href="#" class="btn btn-info" @click.prevent="removeCompetence(item['.key'])">
+              <span class="icon-trash"></span>
+            </a>
           </td>
         </tr>
       </tbody>

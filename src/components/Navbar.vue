@@ -25,8 +25,8 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello~ {{userName}}</a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <router-link to="/admin/profile" class="dropdown-item">修改個人資料</router-link>
-              <!-- <a class="dropdown-item" href="#">修改個人資料</a> -->
+              <!-- <router-link to="/admin/profile" class="dropdown-item">修改個人資料</router-link> -->
+              <a class="dropdown-item" href="#" @click.prevent="toProfile(currentUserKey)">修改個人資料</a>
               <a class="dropdown-item" href="#">修改密碼</a>
             </div>
           </li>
@@ -86,6 +86,10 @@ export default {
     logoutRecord () {
       const vm = this
       vm.$db.ref('records').push(vm.records)
+    },
+    toProfile (id) {
+      const vm = this
+      vm.$router.push(`/admin/profile/${vm.currentUserKey}`)
     },
     getUserName (user) {
       const vm = this

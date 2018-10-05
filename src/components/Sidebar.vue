@@ -33,7 +33,7 @@
 
 <script>
 import firebase from 'firebase'
-// import $ from 'jquery'
+import $ from 'jquery'
 export default {
   name: 'Sidebar',
   data () {
@@ -43,7 +43,8 @@ export default {
         member: false,
         competence: false,
         records: false
-      }
+      },
+      thisPageName: ''
     }
   },
   methods: {
@@ -54,19 +55,22 @@ export default {
         default:
           return false
       }
+    },
+    getPageName (path) {
+      var index = path.lastIndexOf('/') +1
+      return path.slice(index)
     }
   },
   mounted () {
     const vm = this
+    console.log(vm.getPageName(vm.$route.path))
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         vm.$db.ref('member/currentUser').orderByChild('uid').equalTo(user.uid).on('value', snapshot => {
           let data = snapshot.val()
-          // console.log(data)
           for (let key in data) {
             let value = data[key]
             vm.userCanRead = value.readPage
-            // console.log(vm.userCanRead)
           }
         })
       } else {

@@ -81,3 +81,11 @@ a {
 button.signup a {
   display: block;
 }
+
+@media (max-width: 991px) {
+  .sidebar-sticky .nav-item {
+    [class^="icon-"] {
+      display: none;
+    }
+  }
+}

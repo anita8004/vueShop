@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h2 class="mb-5">User {{ thisUser.userName }}</h2>
+  <div class="user-profile container">
+    <h2 class="mb-5">個人資料 - {{ thisUser.name }}</h2>
     <form class="form">
       <div class="form-group form-row">
         <label class="col-12 col-sm-3 col-form-label">UID</label>
@@ -24,8 +24,8 @@
       </div>
       <div class="form-group form-row">
         <label class="col-12 col-sm-3 col-form-label">帳號權限</label>
-        <select name="" class="col-12 col-sm form-control" v-model.number="thisUser.competence" @change="changeCompetence(thisUser.competenceIndex)">
-          <option v-for="(item, key) in competenceArr" :key="key" :value="item.index">{{item.groupName}}</option>
+        <select name="" class="col-12 col-sm form-control" v-model.number="thisUser.competenceIndex" @change="changeCompetence(thisUser.competenceIndex)">
+          <option v-for="(item, key) in competenceArr" :key="key" :value="key">{{item.competenceName}}</option>
         </select>
       </div>
       <div class="form-group">
@@ -47,7 +47,7 @@ export default {
   data () {
     return {
       message: '',
-      useridRef: this.$db.ref(`member/users/${this.$route.params.id}`),
+      useridRef: this.$db.ref(`member/currentUser/${this.$route.params.id}`),
       thisUser: {
         uid: '',
         userName: '',
@@ -148,9 +148,14 @@ export default {
       user.delete().then(function() {
         console.log('刪除成功')
         vm.$db.ref(`member/users/${id}`).remove()
+        vm.$db.ref(`member/currentUser/${id}`).remove()
         vm.$router.push('/login')
       }).catch(function(error) {
-        // An error happened.
+        vm.message = error
+        $('.alert').removeClass('.alert-success').addClass('.alert-danger').css({display: 'block'})
+        setTimeout(function () {
+          $('.alert').css({display: 'none'})
+        }, 1000)
       });
     }
   },

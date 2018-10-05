@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h2 class="mb-5">新增權限</h2>
     <form class="form">
       <div class="form-group form-row">
