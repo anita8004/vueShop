@@ -30,7 +30,6 @@
   </div>
 </template>
 <script>
-// import firebase from 'firebase'
 export default {
   name: 'Members',
   data () {
@@ -71,12 +70,14 @@ export default {
       // const vm = this
       // console.log(id)
       // console.log(uid)
-      // user.delete().then(function() {
-      //   // User deleted.
-      // }).catch(function(error) {
-      //   // An error happened.
-      // })
-      // firebase.auth().deleteUser(uid).then(function () {
+      // let user = vm.$auth.currentUser
+      // console.log(user)
+      // if (user.uid === uid) {
+      //   user.delete().then(function () {
+      //     console.log(user)
+      //   })
+      // }
+      // vm.$auth.deleteUser(uid).then(function () {
       //   console.log('Successfully deleted user')
       //   vm.$db.ref(`member/users/${id}`).remove()
       //   vm.addRecord()

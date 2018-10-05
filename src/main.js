@@ -5,7 +5,6 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Vuefire from 'vuefire'
 import firebase from 'firebase'
-// import VueSession from 'vue-session'
 import 'bootstrap'
 import './assets/fontello/css/fontello.css'
 
@@ -28,6 +27,7 @@ let config = {
   messagingSenderId: '240760379820'
 }
 let firebaseApp = firebase.initializeApp(config)
+Vue.prototype.$auth = firebaseApp.auth()
 Vue.prototype.$db = firebaseApp.database()
 
 firebase.auth().onAuthStateChanged(function (user) {
