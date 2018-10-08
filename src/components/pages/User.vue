@@ -127,7 +127,7 @@ export default {
             $('.alert').css({display: 'none'})
           }, 1000)
         } else {
-          console.log(vm.thisUser)
+          // console.log(vm.thisUser)
           vm.message = '資料已更新'
           $('.alert').removeClass('.alert-danger').addClass('.alert-success').css({display: 'block'})
           setTimeout(function () {
