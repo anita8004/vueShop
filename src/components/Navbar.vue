@@ -2,7 +2,7 @@
   <div id="header">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <router-link to="/admin/applist" class="navbar-brand">
-        <img :src="logoimg" alt="科智企業" width="150">
+        LOGO
       </router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -47,7 +47,6 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      logoimg: require('../assets/images/Servcloud-horizontal.png'),
       records: {
         userName: '',
         actions: '登出',
